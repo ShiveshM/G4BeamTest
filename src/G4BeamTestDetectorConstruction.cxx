@@ -14,7 +14,7 @@
 
 
 G4BeamTestDetectorConstruction::G4BeamTestDetectorConstruction():
-  origin_(NAN, NAN, NAN), verboseLevel_(0)/* , tankList_(0) */
+  origin_(0, 0, 0), verboseLevel_(0)/* , tankList_(0) */
 {
 }
 

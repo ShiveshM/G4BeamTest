@@ -175,6 +175,7 @@ G4VPhysicalVolume* G4BeamTestTank::InstallTank(G4VPhysicalVolume* mother, const 
   tankLog_->SetVisAttributes(tankVisAtt);
 
   G4ThreeVector tankPos = position_ - origin - mother->GetTranslation();
+  G4cout << "tankPos = " << tankPos << G4endl;
 
   G4VPhysicalVolume* tankPhys = new G4PVPlacement(0, tankPos, tankLog_,
                                                   ("tank_" + tankName).c_str(),
