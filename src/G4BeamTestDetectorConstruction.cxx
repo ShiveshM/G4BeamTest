@@ -30,71 +30,31 @@ G4VPhysicalVolume* G4BeamTestDetectorConstruction::Construct()
 
   CreateMaterials();
 
-  // Determine bottom z position of snow volume
-  G4double zSnowBottom(tankList_.at(0)->GetPos().z());
-  BOOST_FOREACH(G4BeamTestTank* tank, tankList_)
-  {
-    // z position of bottom of tank
-    G4double z = tank->GetPos().z() - 0.5*tank->GetTankHeight_G4();
-    zSnowBottom = std::min(z, zSnowBottom);
-  }
-
-  // Subtract safety margin
-  zSnowBottom -= 1.0*CLHEP::m;
-
-  // Triangulate snow surface
-  G4Delaunay delaunay;
-  BOOST_FOREACH(G4BeamTestTank* tank, tankList_)
-  {
-    // z position of snow surface
-    G4double z = tank->GetPos().z() + 0.5 * tank->GetTankHeight_G4() + tank->GetSnowHeight_G4();
-
-    delaunay.AddPoint(tank->GetDelaunayPoint1().x(),
-                      tank->GetDelaunayPoint1().y(),
-                      z - zSnowBottom);
-    delaunay.AddPoint(tank->GetDelaunayPoint2().x(),
-                      tank->GetDelaunayPoint2().y(),
-                      z - zSnowBottom);
-    delaunay.AddPoint(tank->GetDelaunayPoint3().x(),
-                      tank->GetDelaunayPoint3().y(),
-                      z - zSnowBottom);
-  }
-
-  // Create tesselated snow volume
-  G4TessellatedSolid* solidSnow = new G4TessellatedSolid("solid_snow");
-  delaunay.BuildSolid(solidSnow, 50.0*CLHEP::m, 100.0*CLHEP::m);
+  /* // World origin in IceCube coordinates */
+  /* origin_.set(delaunay.GetOrigin().x(), delaunay.GetOrigin().y(), zSnowBottom + zHalfLength); */
 
   // Determine World dimensions
-  G4double xHalfLength = 0.5 * (delaunay.GetXmax() - delaunay.GetXmin());
-  G4double yHalfLength = 0.5 * (delaunay.GetYmax() - delaunay.GetYmin());
-  G4double zHalfLength = 0.5 * (delaunay.GetZmax() + 20.0 * CLHEP::m); // 20 m of atmosphere
-
-  // World origin in IceCube coordinates
-  origin_.set(delaunay.GetOrigin().x(), delaunay.GetOrigin().y(), zSnowBottom + zHalfLength);
+  G4double xWorld = 20.0 * CLHEP::m;
+  G4double yWorld = 20.0 * CLHEP::m;
+  G4double zWorld = 20.0 * CLHEP::m;
 
   // Create world volume
-  G4Box* world_box = new G4Box("solid_world", xHalfLength, yHalfLength, zHalfLength);
+  G4Box* world_box = new G4Box("solid_world", xWorld, yWorld, zWorld);
   G4LogicalVolume* worldLog =
-      new G4LogicalVolume(world_box, G4Material::GetMaterial("Air"), "log_world", 0, 0, 0);
+      new G4LogicalVolume(world_box, G4Material::GetMaterial("G4_AIR"), "log_world", 0, 0, 0);
   G4VPhysicalVolume* worldPhys =
       new G4PVPlacement(0, G4ThreeVector(), worldLog, "world", 0, false, 0);
 
-  // Snow layer
-  G4LogicalVolume* snowLog =
-      new G4LogicalVolume(solidSnow, G4Material::GetMaterial("Snow"), "log_snow", 0, 0, 0);
-  G4VPhysicalVolume* snowPhys =
-      new G4PVPlacement(0, G4ThreeVector(0, 0, -zHalfLength), snowLog, "snow", worldLog, false, 0);
+  /* // Instantiation of a set of visualization attributes with cyan colour */
+  /* G4VisAttributes * snowVisAtt = new G4VisAttributes(G4Colour(0., 1., 1.)); */
+  /* // Assignment of the visualization attributes to the logical volume */
+  /* snowLog->SetVisAttributes(snowVisAtt); */
 
-  // Instantiation of a set of visualization attributes with cyan colour
-  G4VisAttributes * snowVisAtt = new G4VisAttributes(G4Colour(0., 1., 1.));
-  // Assignment of the visualization attributes to the logical volume
-  snowLog->SetVisAttributes(snowVisAtt);
-
-  // Install tanks
-  BOOST_FOREACH(G4BeamTestTank* tank, tankList_)
-  {
-    tank->InstallTank(snowPhys, origin_);
-  }
+  // Install tank
+  /* BOOST_FOREACH(G4BeamTestTank* tank, tankList_) */
+  /* { */
+  tank_->InstallTank(worldPhys, origin_);
+  // }
 
   // User limits (energy cutoffs)
   // Do not create photons or electrons below cherenkov threshold
@@ -102,7 +62,7 @@ G4VPhysicalVolume* G4BeamTestDetectorConstruction::Construct()
   G4UserLimits* energyLimit = new G4UserLimits();
   energyLimit->SetUserMinEkine(280.0 * CLHEP::keV);  // Cherenkov threshold of electrons in ice TODO(shivesh)
   worldLog->SetUserLimits(energyLimit);
-  snowLog->SetUserLimits(energyLimit);
+  /* snowLog->SetUserLimits(energyLimit); */
   
   return worldPhys;
 }
@@ -128,7 +88,7 @@ void G4BeamTestDetectorConstruction::CreateMaterials()
 void G4BeamTestDetectorConstruction::CreateAir()
 {
   G4NistManager* nistManager = G4NistManager::Instance();
-  nistManager->ConstructNewGasMaterial("Air","G4_AIR"/* , (273.15 - 40.0)*CLHEP::kelvin, 670.0E-3*CLHEP::bar */);
+  nistManager->ConstructNewGasMaterial("Air","G4_AIR" , (273.15 + 20.0)*CLHEP::kelvin, 1.0*CLHEP::atmosphere);
 }
 
 /*****************************************************************/
@@ -136,10 +96,19 @@ void G4BeamTestDetectorConstruction::CreateAir()
 void G4BeamTestDetectorConstruction::CreateWater()
 {
   G4NistManager* nistManager = G4NistManager::Instance();
-  // G4Material* ice = new G4Material("Water", 1.0 * CLHEP::g / CLHEP::cm3, 2, kStateLiquid);
-  // ice->AddElement(nistManager->FindOrBuildElement("H"), 2);
-  // ice->AddElement(nistManager->FindOrBuildElement("O"), 1);
-  nistManager->ConstructNewGasMaterial("Water","G4_WATER");
+  G4Material* water = new G4Material("Water", 1.0 * CLHEP::g / CLHEP::cm3, 2, kStateLiquid);
+  water->AddElement(nistManager->FindOrBuildElement("H"), 2);
+  water->AddElement(nistManager->FindOrBuildElement("O"), 1);
+
+  // pmt spectral response 300-650nm
+  // https://docushare.icecube.wisc.edu/dsweb/Get/Document-6637/R7081-02%20data%20sheet.pdf<Paste>
+  // TODO(shivesh): add more properties?
+  const G4int water_bins = 2;
+  G4double water_ephot[water_bins] = {1.91 * CLHEP::eV, 4.13 * CLHEP::eV};
+  G4double water_refr[water_bins] = {1.33, 1.33};
+  G4MaterialPropertiesTable *mpt_water = new G4MaterialPropertiesTable ();
+  mpt_water->AddProperty ("RINDEX", water_ephot, water_refr, water_bins);
+  water->SetMaterialPropertiesTable(mpt_water);
 }
 
 /*****************************************************************/

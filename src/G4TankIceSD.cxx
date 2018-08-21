@@ -1,17 +1,5 @@
-/**
- * Copyright (C) 2009
- * The IceCube collaboration
- * ID: $Id: G4TankIceSD.cxx 152814 2017-01-19 21:34:52Z jgonzalez $
- *
- * @file G4TankIceSD.cxx
- * @version $Rev: 152814 $
- * @date $Date: 2017-01-19 21:34:52 +0000 (Thu, 19 Jan 2017) $
- * @author Tilo Waldenmaier, Thomas Melzig
- */
-
-
-#include <g4-tankresponse/g4classes/G4TankIceSD.h>
-#include <g4-tankresponse/g4classes/G4BeamTestTank.h>
+#include "G4TankIceSD.h"
+#include "G4BeamTestTank.h"
 
 #include <G4Step.hh>
 #include <G4HCofThisEvent.hh>
@@ -25,7 +13,7 @@
 #include <G4OpticalPhoton.hh>
 #include "G4Poisson.hh"
 
-#include <icetray/I3Units.h>
+/* #include <icetray/I3Units.h> */
 
 #include "G4Version.hh"
 
@@ -38,8 +26,8 @@
 #endif
 
 
-G4TankIceSD::G4TankIceSD(G4String name, const std::map<OMKey, G4ThreeVector>& domPositions)
-  : G4VSensitiveDetector(name), domPositions_(domPositions)
+G4TankIceSD::G4TankIceSD(G4String name/* , const std::map<OMKey, G4ThreeVector>& domPositions */)
+  : G4VSensitiveDetector(name)/* , domPositions_(domPositions) */
 {}
 
 
@@ -48,14 +36,14 @@ G4TankIceSD::~G4TankIceSD() {}
 
 void G4TankIceSD::Initialize(G4HCofThisEvent* HCE)
 {
-  std::map<OMKey, G4ThreeVector>::const_iterator om_iter;
-  for(om_iter=domPositions_.begin(); om_iter!=domPositions_.end(); ++om_iter)
-  {
-    sumEdep_[om_iter->first] = 0;
-    cogTime_[om_iter->first] = 0;
-    cherenkovCounter_[om_iter->first] = 0;
-    cherenkovCounterWeight_[om_iter->first] = 0;
-  }
+  // std::map<OMKey, G4ThreeVector>::const_iterator om_iter;
+  // for(om_iter=domPositions_.begin(); om_iter!=domPositions_.end(); ++om_iter)
+  // {
+  sumEdep_ = 0;
+  cogTime_ = 0;
+  cherenkovCounter_ = 0;
+  cherenkovCounterWeight_ = 0;
+  // }
 }
 
 
@@ -76,32 +64,32 @@ G4bool G4TankIceSD::ProcessHits(G4Step* aStep, G4TouchableHistory*)
   G4ThreeVector localPosition = theTouchable->GetHistory()->
                                 GetTopTransform().TransformPoint(worldPosition);
 
-  std::map<OMKey, G4ThreeVector>::const_iterator om_iter;
-  for(om_iter=domPositions_.begin(); om_iter!=domPositions_.end(); ++om_iter)
-  {
-    G4double radius = sqrt(pow(om_iter->second.x() - localPosition.x(), 2) +
-                           pow(om_iter->second.y() - localPosition.y(), 2));
-    G4double height = (om_iter->second.z() - localPosition.z());
+  // std::map<OMKey, G4ThreeVector>::const_iterator om_iter;
+  // for(om_iter=domPositions_.begin(); om_iter!=domPositions_.end(); ++om_iter)
+  // {
+  G4double radius = sqrt(pow(domPositions_.x() - localPosition.x(), 2) +
+                         pow(domPositions_.y() - localPosition.y(), 2));
+  G4double height = (domPositions_.z() - localPosition.z());
 
-    sumEdep_[om_iter->first] += edep;
-    cogTime_[om_iter->first] += edep*time;
-    cherenkovCounterWeight_[om_iter->first] += GetProbability(radius, height) * cherenkovNumber;
-    cherenkovCounter_[om_iter->first] += cherenkovNumber;
-  }
+  sumEdep_ += edep;
+  cogTime_ += edep*time;
+  cherenkovCounterWeight_ += GetProbability(radius, height) * cherenkovNumber;
+  cherenkovCounter_ += cherenkovNumber;
+  // }
   return true;
 }
 
 
 void G4TankIceSD::EndOfEvent(G4HCofThisEvent*)
 {
-  std::map<OMKey, G4ThreeVector>::const_iterator om_iter;
-  for(om_iter=domPositions_.begin(); om_iter!=domPositions_.end(); ++om_iter)
+  // std::map<OMKey, G4ThreeVector>::const_iterator om_iter;
+  // for(om_iter=domPositions_.begin(); om_iter!=domPositions_.end(); ++om_iter)
+  // {
+  if(sumEdep_>0)
   {
-    if(sumEdep_[om_iter->first]>0)
-    {
-      cogTime_[om_iter->first] /= sumEdep_[om_iter->first];
-    }
+    cogTime_ /= sumEdep_;
   }
+  // }
 }
 
 
@@ -122,7 +110,7 @@ G4double G4TankIceSD::GetCerenkovNumber(G4Step* aStep)
   G4MaterialPropertyVector* Rindex = aMaterialPropertiesTable->GetProperty("RINDEX");
   if (!Rindex) return 0.0;
 
-  const G4double Rfact = 369.81 / (CLHEP::eV * CLHEP::cm);
+  const G4double Rfact = 369.81 / (CLHEP::eV * CLHEP::cm); // TODO(shivesh): check this
   const G4double charge = aParticle->GetDefinition()->GetPDGCharge();
   const G4double beta = (pPreStepPoint->GetBeta() + pPostStepPoint->GetBeta()) / 2.;
   if (beta <= 0.0) return 0.0;
@@ -147,7 +135,8 @@ G4double G4TankIceSD::GetCerenkovNumber(G4Step* aStep)
 #endif
   if (nMin!=nMax)
   {
-    log_error("Support for energy dependent refraction index not yet implemented!");
+    /* log_error("Support for energy dependent refraction index not yet implemented!"); */
+    G4cout << "Support for energy dependent refraction index not yet implemented!";
     return 0.0;
   }
 
@@ -163,6 +152,7 @@ G4double G4TankIceSD::GetCerenkovNumber(G4Step* aStep)
 }
 
 
+// TODO(shivesh): what is this
 G4double G4TankIceSD::GetProbability(G4double radius, G4double height)
 {
   height = 0.90 - height / CLHEP::m;

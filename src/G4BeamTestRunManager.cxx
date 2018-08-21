@@ -1,20 +1,8 @@
-/**
- * Copyright (C) 2009
- * The IceCube collaboration
- * ID: $Id: G4BeamTestRunManager.cxx 162348 2018-04-25 20:09:46Z nega $
- *
- * @file G4BeamTestRunManager.cxx
- * @version $Rev: 162348 $
- * @date $Date: 2018-04-25 21:09:46 +0100 (Wed, 25 Apr 2018) $
- * @author Tilo Waldenmaier
- */
-
-
 // On Sun, to prevent conflict with ObjectSpace, G4Timer.hh has to be
 // loaded *before* globals.hh...
 #include "G4Timer.hh"
 
-#include <g4-tankresponse/g4classes/G4BeamTestRunManager.h>
+#include "G4BeamTestRunManager.h"
 #include <G4ParticleGun.hh>
 #include <G4Run.hh>
 

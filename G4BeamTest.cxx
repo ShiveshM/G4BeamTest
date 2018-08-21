@@ -1,22 +1,8 @@
-#ifdef G4MULTITHREADED
-#include "G4MTRunManager.hh"
-#else
-#include "G4RunManager.hh"
-#endif
-
 #include "G4UImanager.hh"
-
-#include "BtPhysicsList.hh"
-#include "BtDetectorConstruction.hh"
-#include "BtActionInitialization.hh"
-
-#ifdef G4VIS_USE
-#include "G4VisExecutive.hh"
-#endif
-
-#ifdef G4UI_USE
 #include "G4UIExecutive.hh"
-#endif
+
+#include "G4Interface.h"
+#include "G4BeamTestTank.h"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 namespace {
@@ -66,44 +52,21 @@ int main(int argc,char** argv)
   //
   G4Random::setTheEngine(new CLHEP::RanecuEngine);
 
-  // Construct the default run manager
-  //
-#ifdef G4MULTITHREADED
-  G4MTRunManager * runManager = new G4MTRunManager;
-  if ( nThreads > 0 ) runManager->SetNumberOfThreads(nThreads);
-#else
-  G4RunManager * runManager = new G4RunManager;
-#endif
-
   // Seed the random number generator manually
   G4Random::setTheSeed(myseed);
 
-  // Set mandatory initialization classes
-  //
-  // Detector construction
-  runManager-> SetUserInitialization(new btDetectorConstruction());
-  // Physics list
-  runManager-> SetUserInitialization(new btPhysicsList());
-  // User action initialization
-  runManager->SetUserInitialization(new btActionInitialization());
-
   // Initialize G4 kernel
   //
-  runManager->Initialize();
-
-#ifdef G4VIS_USE
-  // Initialize visualization
-  //
-  G4VisManager* visManager = new G4VisExecutive;
-  // G4VisExecutive can take a verbosity argument - see /vis/verbose guidance.
-  // G4VisManager* visManager = new G4VisExecutive("Quiet");
-  visManager->Initialize();
-#endif
+  G4Interface *g4Interface_ = G4Interface::GetInstance();
+  if (!g4Interface_) g4Interface_ = new G4Interface(macro);
+  G4BeamTestTank *g4Tank_ = new G4BeamTestTank(/* tankKey_, geometry */);
+  g4Interface_->InstallTank(g4Tank_);
+  g4Interface_->InitializeEvent();
 
   // Get the pointer to the User Interface manager
   //
   G4UImanager* UImanager = G4UImanager::GetUIpointer(); 
-   
+
   if ( macro.size() ) {
      // Batch mode
      G4String command = "/control/execute ";
@@ -116,7 +79,7 @@ int main(int argc,char** argv)
 #ifdef G4VIS_USE
      UImanager->ApplyCommand("/control/execute vis.mac");
 #else
-     UImanager->ApplyCommand("/control/execute OpNovice.in");
+     UImanager->ApplyCommand("/control/execute G4BeamTest.in");
 #endif
      if (ui->IsGUI())
         UImanager->ApplyCommand("/control/execute gui.mac");
@@ -129,11 +92,7 @@ int main(int argc,char** argv)
   // Free the store: user actions, physics_list and detector_description are
   //                 owned and deleted by the run manager, so they should not
   //                 be deleted in the main() program !
-
-#ifdef G4VIS_USE
-  delete visManager;
-#endif
-  delete runManager;
+  delete g4Interface_;
 
   return 0;
 }

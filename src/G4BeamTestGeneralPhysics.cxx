@@ -1,14 +1,3 @@
-/*
- * copyright  (C) 2010
- * The Icecube Collaboration
- *
- * $Id: G4BeamTestGeneralPhysics.cxx 152849 2017-01-20 21:44:25Z jgonzalez $
- *
- * @version $Revision: 152849 $
- * @date $LastChangedDate: 2017-01-20 21:44:25 +0000 (Fri, 20 Jan 2017) $
- * @author Fabian Kislat <fabian.kislat@desy.de> Last changed by: $LastChangedBy: jgonzalez $
- */
-
 #include "G4BeamTestGeneralPhysics.h"
 
 #include <iomanip>   

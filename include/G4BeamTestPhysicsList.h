@@ -1,14 +1,3 @@
-/**
- * Copyright (C) 2009
- * The IceCube collaboration
- * ID: $Id: G4BeamTestPhysicsList.h 149388 2016-08-18 21:50:04Z jgonzalez $
- *
- * @file G4BeamTestPhysicsList.h
- * @version $Rev: 149388 $
- * @date $Date: 2016-08-18 22:50:04 +0100 (Thu, 18 Aug 2016) $
- * @author Tilo Waldenmaier, Thomas Melzig, Fabian Kislat
- */
-
 #ifndef _TOPSIMULATOR_G4BEAMTESTPHYSICSLIST_H
 #define _TOPSIMULATOR_G4BEAMTESTPHYSICSLIST_H
 

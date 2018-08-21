@@ -1,16 +1,3 @@
-/*
- * copyright  (C) 2010
- * The Icecube Collaboration
- *
- * $Id: G4BeamTestHadronPhysics.cxx 152814 2017-01-19 21:34:52Z jgonzalez $
- *
- * @version $Revision: 152814 $
- * @date $LastChangedDate: 2017-01-19 21:34:52 +0000 (Thu, 19 Jan 2017) $
- * @author Fabian Kislat <fabian.kislat@desy.de> Last changed by: $LastChangedBy: jgonzalez $
- *
- * Copied from tanktop
- */
-
 #include <iomanip>   
 
 #include <globals.hh>

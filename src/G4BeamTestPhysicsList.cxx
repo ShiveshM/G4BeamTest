@@ -1,15 +1,3 @@
-/**
- * Copyright (C) 2009
- * The IceCube collaboration
- * ID: $Id: G4BeamTestPhysicsList.cxx 152849 2017-01-20 21:44:25Z jgonzalez $
- *
- * @file G4BeamTestPhysicsList.cxx
- * @version $Rev: 152849 $
- * @date $Date: 2017-01-20 21:44:25 +0000 (Fri, 20 Jan 2017) $
- * @author Tilo Waldenmaier, Thomas Melzig, Javier Gonzalez
- */
-
-
 #include <globals.hh>
 #include <G4Version.hh>
 #include "G4BeamTestPhysicsList.h"

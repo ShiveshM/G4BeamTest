@@ -31,7 +31,7 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.h)
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
 #
-add_executable(G4BeamTest G4BeamTest.cc ${sources} ${headers})
+add_executable(G4BeamTest G4BeamTest.cxx ${sources} ${headers})
 target_link_libraries(G4BeamTest ${Geant4_LIBRARIES} )
 
 #----------------------------------------------------------------------------
@@ -40,12 +40,7 @@ target_link_libraries(G4BeamTest ${Geant4_LIBRARIES} )
 # relies on these scripts being in the current working directory.
 #
 set(G4BeamTest_SCRIPTS
-    G4BeamTest.out
-    G4BeamTest.in
-    optPhoton.mac
-    gui.mac
-    icons.mac
-    run.png
+    run1.mac
     vis.mac
   )
 

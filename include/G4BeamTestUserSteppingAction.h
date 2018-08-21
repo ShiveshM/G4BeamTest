@@ -1,19 +1,5 @@
 #ifndef G4BEAMTESTUSERSTEPPINGACTION_H_INCLUDED
 #define G4BEAMTESTUSERSTEPPINGACTION_H_INCLUDED
-/**
- * Copyright (C) 2011
- * The IceCube collaboration
- * ID: $Id$
- *
- * @file G4BeamTestUserSteppingAction.h
- * @version $Revision$
- * @date $Date$
- * @author Thomas Melzig
- *
- * $LastChangedBy$
- */
-
-
 #include "G4UserSteppingAction.hh"
 
 /**

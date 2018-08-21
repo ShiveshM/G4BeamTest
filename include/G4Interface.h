@@ -1,19 +1,8 @@
-/**
- * Copyright (C) 2009
- * The IceCube collaboration
- * ID: $Id: G4Interface.h 149388 2016-08-18 21:50:04Z jgonzalez $
- *
- * @file G4Interface.h
- * @version $Rev: 149388 $
- * @date $Date: 2016-08-18 22:50:04 +0100 (Thu, 18 Aug 2016) $
- * @author Tilo Waldenmaier
- */
-
 #ifndef _TOPSIM_G4INTERFACE_H_
 #define _TOPSIM_G4INTERFACE_H_
 
-#include <g4-tankresponse/g4classes/G4BeamTestRunManager.h>
-#include <icetray/I3Logging.h>
+#include "G4BeamTestRunManager.h"
+/* #include <icetray/I3Logging.h> */
 
 #ifdef G4VIS_USE
 class G4VisManager;
@@ -44,7 +33,10 @@ class G4Interface
   /// To be called after simulating each IceTray event.
   void TerminateEvent();
   /// Simulate a single particle (InitializeEvent must be called first)
-  void InjectParticle(const I3Particle& particle);
+  void InjectParticle(const std::string& particleName,
+          const G4ThreeVector& particlePosition,
+          const G4ThreeVector& particleDirection,
+          const G4double particleEnergy);
 
  private:
   void Initialize();
@@ -62,7 +54,7 @@ class G4Interface
   bool eventInitialized_;
   std::string visMacro_;
 
-  SET_LOGGER("G4Interface");
+  /* SET_LOGGER("G4Interface"); */
 };
 
 #endif

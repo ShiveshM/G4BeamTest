@@ -1,18 +1,4 @@
-/**
- * Copyright (C) 2011
- * The IceCube collaboration
- * ID: $Id$
- *
- * @file G4BeamTestUserSteppingAction.cxx
- * @version $Revision$
- * @date $Date$
- * @author Thomas Melzig
- *
- * $LastChangedBy$
- */
-
-
-#include <g4-tankresponse/g4classes/G4BeamTestUserSteppingAction.h>
+#include "G4BeamTestUserSteppingAction.h"
 
 #include "G4Step.hh"
 #include "G4Track.hh"

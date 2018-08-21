@@ -4,7 +4,7 @@
 #include <G4VUserDetectorConstruction.hh>
 #include <G4ThreeVector.hh>
 
-// class G4BeamTestTank;
+#include "G4BeamTestTank.h";
 
 class G4BeamTestDetectorConstruction: public G4VUserDetectorConstruction
 {
@@ -17,7 +17,7 @@ class G4BeamTestDetectorConstruction: public G4VUserDetectorConstruction
 
   void SetVerboseLevel(G4int level) {verboseLevel_=level;}
 
-  /* void InstallTank(G4BeamTestTank* tank) {tankList_.push_back(tank);} */
+  void InstallTank(G4BeamTestTank* tank) {tank_ = tank;}
 
   const G4ThreeVector& GetWorldOrigin() const {return origin_;}
 
@@ -39,7 +39,7 @@ class G4BeamTestDetectorConstruction: public G4VUserDetectorConstruction
 
   G4int verboseLevel_;
 
-  // std::vector<G4BeamTestTank*> tankList_;
+  G4BeamTestTank* tank_;
 };
 
 #endif

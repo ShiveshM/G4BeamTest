@@ -1,16 +1,3 @@
-/*
- * copyright  (C) 2010
- * The Icecube Collaboration
- *
- * $Id: G4BeamTestMuonPhysics.cxx 86420 2012-03-20 16:00:37Z kislat $
- *
- * @version $Revision: 86420 $
- * @date $LastChangedDate: 2012-03-20 16:00:37 +0000 (Tue, 20 Mar 2012) $
- * @author Fabian Kislat <fabian.kislat@desy.de>, Peter Nießen (tanktop)
- * Last changed by: $LastChangedBy: kislat $
- */
-
-
 #include <globals.hh>
 #include <G4ParticleDefinition.hh>
 #include <G4ParticleTable.hh>
@@ -78,7 +65,7 @@ void G4BeamTestMuonPhysics::ConstructProcess()
   pManager->AddProcess(&muMinusBremsstrahlung_,     -1,  3, 3);
   pManager->AddProcess(&muMinusPairProduction_,     -1,  4, 4);
 
-  pManager->AddRestProcess(&muMinusCaptureAtRest_);
+  pManager->AddRestProcess(&muMinusCapture_);
 
   // Tau Plus Physics
   pManager = G4TauPlus::TauPlus()->GetProcessManager();

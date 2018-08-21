@@ -1,27 +1,13 @@
-/**
- * Copyright (C) 2009
- * The IceCube collaboration
- * ID: $Id: I3G4TankResponse.cxx 158929 2017-10-20 00:58:24Z cweaver $
- *
- * @file I3G4TankResponse.cxx
- * @version $Revision: 158929 $
- * @date $Date: 2017-10-20 01:58:24 +0100 (Fri, 20 Oct 2017) $
- * @author Tilo Waldenmaier <tilo.waldenmaier@desy.de>, Thomas Melzig <thomas.melzig@desy.de>
- *
- * $LastChangedBy: cweaver $
- */
-
-
 #include <topsimulator/interface/I3IceTopResponseFactory.h>
 #include <topsimulator/GeoFunctions.h>
-#include <g4-tankresponse/g4classes/G4IceTopTank.h>
-#include <g4-tankresponse/g4classes/G4Interface.h>
-#include <g4-tankresponse/I3G4TankResponse.h>
+#include "G4IceTopTank.h"
+#include "G4Interface.h"
+#include "I3G4TankResponse.h"
 //#include <pmt-simulator/I3PMTConstants.h>
-#include <phys-services/I3GSLRandomService.h>
-#include <dataclasses/physics/I3Particle.h>
-#include <dataclasses/I3Direction.h>
-#include <simclasses/I3MCPE.h>
+/* #include <phys-services/I3GSLRandomService.h> */
+/* #include <dataclasses/physics/I3Particle.h> */
+/* #include <dataclasses/I3Direction.h> */
+/* #include <simclasses/I3MCPE.h> */
 
 #include <cmath>
 
@@ -371,4 +357,4 @@ void I3G4TankResponse::EndEvent(HitHistoCollection &hitHC, HitHistoCollection& c
 }
 
 
-I3_SERVICE_FACTORY(I3IceTopResponseFactory<I3G4TankResponse>);
+/* I3_SERVICE_FACTORY(I3IceTopResponseFactory<I3G4TankResponse>); */

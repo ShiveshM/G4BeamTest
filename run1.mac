@@ -1,0 +1,11 @@
+/gps/particle mu-
+/gps/energy 8 GeV
+
+/gps/pos/type Plane
+/gps/pos/shape Circle
+/gps/pos/centre 60 60 -25 cm
+/gps/pos/radius 0.5 cm
+/gps/ang/type iso
+
+/gps/direction 1 0 0
+/run/beamOn 1

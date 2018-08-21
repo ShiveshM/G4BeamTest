@@ -1,15 +1,3 @@
-/*
- * copyright  (C) 2010
- * The Icecube Collaboration
- *
- * $Id: G4BeamTestMuonPhysics.h 154687 2017-04-05 15:46:57Z jgonzalez $
- *
- * @version $Revision: 154687 $
- * @date $LastChangedDate: 2017-04-05 16:46:57 +0100 (Wed, 05 Apr 2017) $
- * @author Fabian Kislat <fabian.kislat@desy.de>, Peter Nießen (tanktop)
- * Last changed by: $LastChangedBy: jgonzalez $
- */
-
 #ifndef G4TANKRESPONSE_G4BEAMTESTMUONPHYSICS_H_INCLUDED
 #define G4TANKRESPONSE_G4BEAMTESTMUONPHYSICS_H_INCLUDED
 
@@ -20,7 +8,7 @@
 #include <G4MuPairProduction.hh>
 #include <G4MuIonisation.hh>
 #include <G4hIonisation.hh>
-#include <G4MuonMinusCaptureAtRest.hh>
+#include <G4MuonMinusCapture.hh>
 
 /**
    @class G4BeamTestMuonPhysics
@@ -58,7 +46,7 @@ private:
   G4MuBremsstrahlung     muMinusBremsstrahlung_;
   G4MuPairProduction     muMinusPairProduction_;
 
-  G4MuonMinusCaptureAtRest muMinusCaptureAtRest_;
+  G4MuonMinusCapture muMinusCapture_;
 
   // Tau physics
   G4MuMultipleScattering   tauPlusMultipleScattering_;
