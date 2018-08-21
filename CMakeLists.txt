@@ -42,6 +42,8 @@ target_link_libraries(G4BeamTest ${Geant4_LIBRARIES} )
 set(G4BeamTest_SCRIPTS
     run1.mac
     vis.mac
+    gui.mac
+    icons.mac
   )
 
 foreach(_script ${G4BeamTest_SCRIPTS})
