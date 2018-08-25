@@ -80,7 +80,6 @@ class G4BeamTestTank
   G4double innerRadius_;
   G4double outerRadius_;
 
-  G4double waterHeight_;
   G4double airHeight_;
 
   G4double glassOuterRadius_;

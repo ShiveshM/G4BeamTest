@@ -34,14 +34,14 @@ G4VPhysicalVolume* G4BeamTestDetectorConstruction::Construct()
   /* origin_.set(delaunay.GetOrigin().x(), delaunay.GetOrigin().y(), zSnowBottom + zHalfLength); */
 
   // Determine World dimensions
-  G4double xWorld = 20.0 * CLHEP::m;
-  G4double yWorld = 20.0 * CLHEP::m;
-  G4double zWorld = 20.0 * CLHEP::m;
+  G4double xWorld = 2.0 * CLHEP::m;
+  G4double yWorld = 2.0 * CLHEP::m;
+  G4double zWorld = 2.0 * CLHEP::m;
 
   // Create world volume
   G4Box* world_box = new G4Box("solid_world", xWorld, yWorld, zWorld);
   G4LogicalVolume* worldLog =
-      new G4LogicalVolume(world_box, G4Material::GetMaterial("G4_AIR"), "log_world", 0, 0, 0);
+      new G4LogicalVolume(world_box, G4Material::GetMaterial("Air"), "log_world", 0, 0, 0);
   G4VPhysicalVolume* worldPhys =
       new G4PVPlacement(0, G4ThreeVector(), worldLog, "world", 0, false, 0);
 

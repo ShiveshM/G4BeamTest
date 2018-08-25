@@ -11,6 +11,17 @@
 #include <G4eBremsstrahlung.hh>
 #include <G4eplusAnnihilation.hh>
 
+#include <G4Cerenkov.hh>
+#include <G4Scintillation.hh>
+#include <G4OpAbsorption.hh>
+#include <G4OpRayleigh.hh>
+#include <G4OpMieHG.hh>
+#include <G4OpBoundaryProcess.hh>
+
+#include <G4LossTableManager.hh>
+#include <G4EmSaturation.hh>
+
+
 /**
    @class G4BeamTestEMPhysics
    @brief Electromagnetic physics. Used only if Geant4 version is earlier than 4.10.
@@ -30,6 +41,7 @@ public:
 
   void ConstructParticle();
   void ConstructProcess();
+  void ConstructOp();
 
 private:
   // Gamma physics
@@ -47,6 +59,9 @@ private:
   G4eIonisation positronIonisation; 
   G4eBremsstrahlung positronBremsStrahlung;  
   G4eplusAnnihilation annihilation;
+
+  // Cerenkov physics
+  G4Cerenkov cerenkov;
 };
 
 #endif // G4TANKRESPONSE_G4BEAMTESTEMPHYSICS_H_INCLUDED

@@ -8,4 +8,5 @@
 /gps/ang/type iso
 
 /gps/direction 1 0 0
+/gps/position -2 0 0 m
 /run/beamOn 1

@@ -27,13 +27,14 @@
 G4BeamTestTank::G4BeamTestTank()
 {
   // Get tank dimensions
-  tankThickness_ = 0.5*CLHEP::cm; // TODO(shivesh) : check thickness
+  tankThickness_ = 0.0*CLHEP::cm; // TODO(shivesh) : check thickness
   tankHeight_  = 76.83 * 2.54 * CLHEP::cm;
   innerRadius_ = 32 * 2.54 * CLHEP::cm;
   outerRadius_ = innerRadius_ + tankThickness_;
 
   // Get fill height
   fillHeight_ = 55.1 * 2.54 * CLHEP::cm;
+  airHeight_ = tankHeight_ - fillHeight_;
 
   // Set DOM dimensions
   glassOuterRadius_ = 6.5 * 2.54 * CLHEP::cm; // 6.5" outer glass sphere radius
@@ -81,6 +82,8 @@ G4VPhysicalVolume* G4BeamTestTank::InstallTank(G4VPhysicalVolume* mother, const 
 
   // Define air volume
   G4Material* air = G4Material::GetMaterial("Air");
+  G4cout << "airHeight_ = " << airHeight_ << G4endl;
+  G4cout << "fillHeight_ = " << fillHeight_ << G4endl;
   G4Tubs* solidAir = new G4Tubs(("solid_air_" + tankName).c_str(),
                                     0.0 * CLHEP::m, innerRadius_, 0.5 * airHeight_,
                                     0.0 * CLHEP::deg, 360.0 * CLHEP::deg);
@@ -88,6 +91,7 @@ G4VPhysicalVolume* G4BeamTestTank::InstallTank(G4VPhysicalVolume* mother, const 
       new G4LogicalVolume(solidAir, air, ("log_air_" + tankName).c_str(), 0, 0, 0);
   G4ThreeVector physAirPosition(0, 0, -0.5 * tankHeight_ + 0.5 * CLHEP::cm + fillHeight_ +
                                     0.5 * airHeight_);
+  G4cout << "physAirPosition = " << physAirPosition << G4endl;
   G4VPhysicalVolume* physAir_UNUSED =
       new G4PVPlacement(0, physAirPosition, logAir,
                         ("air_" + tankName).c_str(), tankLog_, false, 0);
@@ -104,6 +108,8 @@ G4VPhysicalVolume* G4BeamTestTank::InstallTank(G4VPhysicalVolume* mother, const 
 
   G4ThreeVector upperDOMpos(0, 0, -0.5 * airHeight_);
   G4ThreeVector lowerDOMpos(0, 0,  0.5 * fillHeight_);
+  G4cout << "upperDOMpos = " << upperDOMpos << G4endl;
+  G4cout << "lowerDOMpos = " << lowerDOMpos << G4endl;
 
   // domPosIce[omKey] = lowerDOMpos;
 

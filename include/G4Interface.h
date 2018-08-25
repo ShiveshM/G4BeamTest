@@ -1,7 +1,8 @@
 #ifndef _TOPSIM_G4INTERFACE_H_
 #define _TOPSIM_G4INTERFACE_H_
 
-#include "G4BeamTestRunManager.h"
+#include "G4RunManager.hh"
+/* #include "G4BeamTestRunManager.h" */
 /* #include <icetray/I3Logging.h> */
 
 #ifdef G4VIS_USE
@@ -33,17 +34,17 @@ class G4Interface
   /// To be called after simulating each IceTray event.
   void TerminateEvent();
   /// Simulate a single particle (InitializeEvent must be called first)
-  void InjectParticle(const std::string& particleName,
-          const G4ThreeVector& particlePosition,
-          const G4ThreeVector& particleDirection,
-          const G4double particleEnergy);
+  /* void InjectParticle(const std::string& particleName, */
+  /*         const G4ThreeVector& particlePosition, */
+  /*         const G4ThreeVector& particleDirection, */
+  /*         const G4double particleEnergy); */
 
  private:
   void Initialize();
 
   static G4Interface* g4Interface_;
 
-  G4BeamTestRunManager runManager_;
+  G4RunManager runManager_;
 
 #ifdef G4VIS_USE
   G4VisManager* visManager_;

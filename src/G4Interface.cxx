@@ -5,6 +5,8 @@
 #include "G4BeamTestPhysicsList.h"
 #include "G4BeamTestUserTrackingAction.h"
 #include "G4BeamTestUserSteppingAction.h"
+#include "G4BeamTestPrimaryGeneratorAction.h"
+#include "G4BeamTestRunAction.h"
 
 /* #include <icetray/I3Logging.h> */
 
@@ -73,46 +75,47 @@ void G4Interface::InitializeEvent()
 
   if(!eventInitialized_)
   {
-    runManager_.InitializeRun();
+    /* runManager_.InitializeRun(); */
+    runManager_.Initialize();
     eventInitialized_ = true;
   }
 }
 
 
-void G4Interface::InjectParticle(
-        const std::string& particleName, const G4ThreeVector& particlePosition,
-        const G4ThreeVector& particleDirection, const G4double particleEnergy
-        )
-{
-  if(!eventInitialized_)
-  {
-    /* log_fatal("No event initialized. Cannot inject particle!"); */
-    G4cout << "No event initialized. Cannot inject particle!" << G4endl;
-    return;
-  }
-
-  G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-  G4ParticleDefinition* particleDef = NULL;
-  particleDef = particleTable->FindParticle(particleName);
-
-  // Transform coordinates to world system
-  G4ThreeVector position = particlePosition - detector_->GetWorldOrigin();
-
-  G4ParticleGun gun(1);
-  gun.SetParticleDefinition(particleDef);
-  gun.SetParticleEnergy(particleEnergy);
-  gun.SetParticlePosition(position);
-  gun.SetParticleMomentumDirection(particleDirection);
-
-  G4cout << "Injecting %s: x=%.2f m, y=%.2f m, z=%.2f m, E=%.3f MeV",
-            particleName.c_str(),
-            position.x() / CLHEP::m,
-            position.y() / CLHEP::m,
-            position.z() / CLHEP::m,
-            gun.GetParticleEnergy() / CLHEP::MeV;
-
-  runManager_.InjectParticle(&gun);
-}
+/* void G4Interface::InjectParticle( */
+/*         const std::string& particleName, const G4ThreeVector& particlePosition, */
+/*         const G4ThreeVector& particleDirection, const G4double particleEnergy */
+/*         ) */
+/* { */
+/*   if(!eventInitialized_) */
+/*   { */
+/*     #<{(| log_fatal("No event initialized. Cannot inject particle!"); |)}># */
+/*     G4cout << "No event initialized. Cannot inject particle!" << G4endl; */
+/*     return; */
+/*   } */
+/*  */
+/*   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable(); */
+/*   G4ParticleDefinition* particleDef = NULL; */
+/*   particleDef = particleTable->FindParticle(particleName); */
+/*  */
+/*   // Transform coordinates to world system */
+/*   G4ThreeVector position = particlePosition - detector_->GetWorldOrigin(); */
+/*  */
+/*   G4ParticleGun gun(1); */
+/*   gun.SetParticleDefinition(particleDef); */
+/*   gun.SetParticleEnergy(particleEnergy); */
+/*   gun.SetParticlePosition(position); */
+/*   gun.SetParticleMomentumDirection(particleDirection); */
+/*  */
+/*   G4cout << "Injecting %s: x=%.2f m, y=%.2f m, z=%.2f m, E=%.3f MeV", */
+/*             particleName.c_str(), */
+/*             position.x() / CLHEP::m, */
+/*             position.y() / CLHEP::m, */
+/*             position.z() / CLHEP::m, */
+/*             gun.GetParticleEnergy() / CLHEP::MeV; */
+/*  */
+/*   runManager_.InjectParticle(&gun); */
+/* } */
 
 
 void G4Interface::TerminateEvent()
@@ -124,7 +127,8 @@ void G4Interface::TerminateEvent()
 
   if(eventInitialized_)
   {
-    runManager_.TerminateRun();
+    /* runManager_.TerminateRun(); */
+      runManager_.RunTermination();
     eventInitialized_ = false;
   }
 }
@@ -146,6 +150,12 @@ void G4Interface::Initialize()
   /* log_debug("Init physics list ..."); */
   G4cout << "Init physics list ..." << G4endl;
   runManager_.SetUserInitialization(new G4BeamTestPhysicsList());
+
+  G4cout << "Init PrimaryGeneratorAction ..." << G4endl;
+  runManager_.SetUserAction(new G4BeamTestPrimaryGeneratorAction());
+
+  G4cout << "Init RunAction ..." << G4endl;
+  runManager_.SetUserAction(new G4BeamTestRunAction());
 
   /* log_debug("Init UserTrackingAction ..."); */
   G4cout << "Init UserTrackingAction ..." << G4endl;
