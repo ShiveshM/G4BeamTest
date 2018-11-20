@@ -4,7 +4,7 @@
 #include <G4VUserDetectorConstruction.hh>
 #include <G4ThreeVector.hh>
 
-#include "G4BeamTestTank.h";
+#include "G4BeamTestTank.h"
 
 class G4BeamTestDetectorConstruction: public G4VUserDetectorConstruction
 {

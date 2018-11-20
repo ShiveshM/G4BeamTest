@@ -24,11 +24,15 @@ void G4BeamTestUserTrackingAction::PostUserTrackingAction(const G4Track* track)
       for(size_t i=0;i<nSeco;i++)
       {
         //check if secondary particle is a gamma
-        if((*secondaries)[i]->GetDefinition()->GetParticleName() == "gamma")
+        G4String particle = (*secondaries)[i]->GetDefinition()->GetParticleName();
+        if(particle == "gamma" || particle == "opticalphoton")
         {
           //check if particle energy is below threshold; if true, kill the particle
           G4double energy = (*secondaries)[i]->GetTotalEnergy();
-          if(energy < threshold) (*secondaries)[i]->SetTrackStatus(fStopAndKill);
+          if(energy < threshold){
+              G4cout << "TrackingAction: killing particle " << particle << " with energy " << energy << " < " << threshold << G4endl;
+              (*secondaries)[i]->SetTrackStatus(fStopAndKill);
+          }
         }
       }
     }

@@ -8,11 +8,12 @@
 
 class G4LogicalVolume;
 class G4VPhysicalVolume;
-class G4TankIceSD;
 
 #include <G4Types.hh>
 #include <G4ThreeVector.hh>
 #include <map>
+
+#include "G4BeamTestSiSD.h"
 
 /**
  * This class constructs the physical volume of single tanks, serves as bridge to the sensitive detector in the tank, and computes the location of the point that define the snow surface. It also stores the basic tank dimensions (height, radius, snow).
@@ -53,9 +54,9 @@ class G4BeamTestTank
   /* double   GetSnowHeight_I3(); */
 
   /// Energy deposit for a given OM, in Geant4 units (from G4TankIceSD)
-  G4double GetEDep_G4(/* const OMKey& omKey */);
+  /* G4double GetEDep_G4(#<{(| const OMKey& omKey |)}>#); */
   /// Emission time for a given OM, in Geant4 units (from G4TankIceSD)
-  G4double GetTime_G4(/* const OMKey& omKey */);
+  /* G4double GetTime_G4(#<{(| const OMKey& omKey |)}>#); */
 
   /* /// Energy deposit for a given OM, in Geant4 units (from G4TankIceSD) */
   /* double   GetEDep_I3(const OMKey& omKey); */
@@ -63,9 +64,9 @@ class G4BeamTestTank
   /* double   GetTime_I3(const OMKey& omKey); */
 
   /// Number of Cherenkovs for a given OM (from G4TankIceSD)
-  double GetNumCherenkov(/* const OMKey& omKey */);
+  /* double GetNumCherenkov(#<{(| const OMKey& omKey |)}>#); */
   /// Number of Cherenkovs weighted by emission point (from G4TankIceSD)
-  double GetNumCherenkovWeight(/* const OMKey& omKey */);
+  /* double GetNumCherenkovWeight(#<{(| const OMKey& omKey |)}>#); */
 
   /* const TankKey& GetTankKey() const {return tankKey_;} */
 
@@ -94,7 +95,7 @@ class G4BeamTestTank
   // std::map<OMKey, G4ThreeVector> relDomPositions_;
 
   G4LogicalVolume* tankLog_;
-  G4TankIceSD* iceSD_;
+  G4BeamTestSiSD* iceSD_;
 
   /* const TankKey& tankKey_; */
   /* const I3Geometry& geometry_; */

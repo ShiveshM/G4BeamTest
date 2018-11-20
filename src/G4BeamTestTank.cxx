@@ -14,7 +14,8 @@
 /* #include <boost/foreach.hpp> */
 
 #include "G4BeamTestTank.h"
-#include "G4TankIceSD.h"
+#include "G4BeamTestSiSD.h"
+/* #include "G4TankIceSD.h" */
 
 //prevent gcc to make something stupid with pretended unused variables
 #ifdef __GNUC__
@@ -55,7 +56,7 @@ G4VPhysicalVolume* G4BeamTestTank::InstallTank(G4VPhysicalVolume* mother, const 
   // See also corresponding UserSpecialCuts in Physicslist !!!!
   // TODO(shivesh): Maybe do all of this as stepping action ??????
   G4UserLimits* energyLimit = new G4UserLimits();
-  energyLimit->SetUserMinEkine(264.1 * CLHEP::keV);  // Cherenkov threshold of electrons in water
+  energyLimit->SetUserMinEkine(1.907 * CLHEP::eV);  // Lower threshold of PMT - 600nm
 
   // std::string tankName=boost::lexical_cast<std::string>(tankKey_);
   std::string tankName = "BTT";
@@ -139,7 +140,7 @@ G4VPhysicalVolume* G4BeamTestTank::InstallTank(G4VPhysicalVolume* mother, const 
       new G4LogicalVolume(upperglasssphere, glass,
                           ("log_dom_up_" + omName).c_str(), 0, 0, 0);
   G4LogicalVolume* logLowerGlass =
-      new G4LogicalVolume(lowerglasssphere, glass,
+      new G4LogicalVolume(lowerglasssphere, water,
                           ("log_dom_lo_" + omName).c_str(), 0, 0, 0);
   G4LogicalVolume* logUpperDOM =
       new G4LogicalVolume(upperdomsphere, effectiveDOM,
@@ -167,11 +168,12 @@ G4VPhysicalVolume* G4BeamTestTank::InstallTank(G4VPhysicalVolume* mother, const 
   logLowerDOM->SetUserLimits(energyLimit);
   // }
 
-  // Define sensitive detector TODO(shivesh): make the PMT the SD
+  // Define sensitive detector
   G4SDManager* sdManager = G4SDManager::GetSDMpointer();
-  iceSD_ = new G4TankIceSD(("ice_SD_" + tankName).c_str());
+  iceSD_ = new G4BeamTestSiSD(("ice_SD_" + tankName).c_str(), "HitsCollection");
   sdManager->AddNewDetector(iceSD_);
-  logWater->SetSensitiveDetector(iceSD_);
+  /* logLowerDOM->SetSensitiveDetector(iceSD_); */
+  logLowerGlass->SetSensitiveDetector(iceSD_);
 
   // Instantiation of a set of visualization attributes with red colour
   G4VisAttributes * tankVisAtt = new G4VisAttributes(G4Colour(1,0,0));
@@ -196,29 +198,29 @@ G4VPhysicalVolume* G4BeamTestTank::InstallTank(G4VPhysicalVolume* mother, const 
 }
 
 
-double G4BeamTestTank::GetNumCherenkov(/* const OMKey& omKey */)
-{
-  return std::max(iceSD_->GetNumCherenkov(/* omKey */), 0.);
-}
-
-
-double G4BeamTestTank::GetNumCherenkovWeight(/* const OMKey& omKey */)
-{
-  return std::max(iceSD_->GetNumCherenkovWeight(/* omKey */), 0.);
-}
-
-
-double G4BeamTestTank::GetEDep_G4(/* const OMKey& omKey */)
-{
-  return std::max(iceSD_->GetEDep(/* omKey */), 0.);
-}
-
-
-double G4BeamTestTank::GetTime_G4(/* const OMKey& omKey */)
-{
-  return iceSD_->GetTime(/* omKey */);
-}
-
+/* double G4BeamTestTank::GetNumCherenkov(#<{(| const OMKey& omKey |)}>#) */
+/* { */
+/*   return std::max(iceSD_->GetNumCherenkov(#<{(| omKey |)}>#), 0.); */
+/* } */
+/*  */
+/*  */
+/* double G4BeamTestTank::GetNumCherenkovWeight(#<{(| const OMKey& omKey |)}>#) */
+/* { */
+/*   return std::max(iceSD_->GetNumCherenkovWeight(#<{(| omKey |)}>#), 0.); */
+/* } */
+/*  */
+/*  */
+/* double G4BeamTestTank::GetEDep_G4(#<{(| const OMKey& omKey |)}>#) */
+/* { */
+/*   return std::max(iceSD_->GetEDep(#<{(| omKey |)}>#), 0.); */
+/* } */
+/*  */
+/*  */
+/* double G4BeamTestTank::GetTime_G4(#<{(| const OMKey& omKey |)}>#) */
+/* { */
+/*   return iceSD_->GetTime(#<{(| omKey |)}>#); */
+/* } */
+/*  */
 
 /* double G4BeamTestTank::GetEDep_I3(const OMKey& omKey) */
 /* { */

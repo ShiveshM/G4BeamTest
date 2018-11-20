@@ -1,3 +1,5 @@
+/vis/ogl/set/displayListLimit 1000000
+
 /gps/particle mu-
 /gps/energy 8 GeV
 

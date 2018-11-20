@@ -5,7 +5,9 @@
 #include "G4BeamTestPhysicsList.h"
 #include "G4BeamTestUserTrackingAction.h"
 #include "G4BeamTestUserSteppingAction.h"
+#include "G4BeamTestUserStackingAction.h"
 #include "G4BeamTestPrimaryGeneratorAction.h"
+#include "G4BeamTestEventAction.h"
 #include "G4BeamTestRunAction.h"
 
 /* #include <icetray/I3Logging.h> */
@@ -164,6 +166,12 @@ void G4Interface::Initialize()
   /* log_debug("Init UserSteppingAction ..."); */
   G4cout << "Init UserSteppingAction ..." << G4endl;
   runManager_.SetUserAction(new G4BeamTestUserSteppingAction());
+
+  G4cout << "Init UserStackingAction ..." << G4endl;
+  runManager_.SetUserAction(new G4BeamTestUserStackingAction());
+
+  G4cout << "Init G4BeamTestEventAction ..." << G4endl;
+  runManager_.SetUserAction(new G4BeamTestEventAction());
 
   // Initialize G4 kernel
   /* log_debug("Init run manager ..."); */

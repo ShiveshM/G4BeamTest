@@ -60,7 +60,8 @@ G4VPhysicalVolume* G4BeamTestDetectorConstruction::Construct()
   // Do not create photons or electrons below cherenkov threshold
   // See also corresponding UserSpecialCuts in Physicslist !!!!
   G4UserLimits* energyLimit = new G4UserLimits();
-  energyLimit->SetUserMinEkine(280.0 * CLHEP::keV);  // Cherenkov threshold of electrons in ice TODO(shivesh)
+  /* energyLimit->SetUserMinEkine(280.0 * CLHEP::keV);  // Cherenkov threshold of electrons in ice */
+  energyLimit->SetUserMinEkine(1.907 * CLHEP::eV);  // Lower threshold of PMT - 600nm
   worldLog->SetUserLimits(energyLimit);
   /* snowLog->SetUserLimits(energyLimit); */
   

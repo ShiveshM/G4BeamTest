@@ -2,12 +2,12 @@
 #include <G4Version.hh>
 #include "G4BeamTestPhysicsList.h"
 #include "G4BeamTestGeneralPhysics.h"
-#if G4VERSION_NUMBER < 1000
-#include "G4BeamTestEMPhysics.h"
-#include "G4BeamTestMuonPhysics.h"
-#include "G4BeamTestHadronPhysics.h"
-#include "G4BeamTestIonPhysics.h"
-#else
+/* #if G4VERSION_NUMBER < 1000 */
+/* #include "G4BeamTestEMPhysics.h" */
+/* #include "G4BeamTestMuonPhysics.h" */
+/* #include "G4BeamTestHadronPhysics.h" */
+/* #include "G4BeamTestIonPhysics.h" */
+/* #else */
 #include "G4DecayPhysics.hh"
 #include "G4EmStandardPhysics.hh"
 #include "G4EmExtraPhysics.hh"
@@ -18,7 +18,9 @@
 #include "G4DataQuestionaire.hh"
 #include "G4HadronPhysicsFTFP_BERT.hh"
 #include <FTFP_BERT.hh>
-#endif
+/* #endif */
+
+#include <G4OpticalPhysics.hh>
 
 #include <G4ProcessManager.hh>
 #include <G4ParticleTypes.hh>
@@ -32,14 +34,16 @@ G4BeamTestPhysicsList::G4BeamTestPhysicsList()
   SetVerboseLevel(1);
 
   RegisterPhysics(new G4BeamTestGeneralPhysics);
-#if G4VERSION_NUMBER < 1000
-  RegisterPhysics(new G4BeamTestEMPhysics);
-  RegisterPhysics(new G4BeamTestMuonPhysics);
-  RegisterPhysics(new G4BeamTestHadronPhysics);
-  RegisterPhysics(new G4BeamTestIonPhysics);
-#else
+/* #if G4VERSION_NUMBER < 1000 */
+/*   RegisterPhysics(new G4BeamTestEMPhysics); */
+/*   RegisterPhysics(new G4BeamTestMuonPhysics); */
+/*   RegisterPhysics(new G4BeamTestHadronPhysics); */
+/*   RegisterPhysics(new G4BeamTestIonPhysics); */
+/* #else */
   // The following is basically Geant4's FTFP_BERT physics list
   G4DataQuestionaire it(photon); // this checks that G4LEVELGAMMADATA is there
+
+  RegisterPhysics(new G4OpticalPhysics());
 
   RegisterPhysics(new G4EmStandardPhysics());
   RegisterPhysics(new G4EmExtraPhysics());
@@ -49,7 +53,7 @@ G4BeamTestPhysicsList::G4BeamTestPhysicsList()
   RegisterPhysics(new G4StoppingPhysics());
   RegisterPhysics(new G4IonPhysics());
   //RegisterPhysics(new G4NeutronTrackingCut());
-#endif
+/* #endif */
 }
 
 
