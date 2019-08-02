@@ -45,6 +45,7 @@ void G4BeamTestSiSD::Initialize(G4HCofThisEvent* hce)
 
   G4int hcID 
     = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
+  G4cout << "hcID " << hcID << G4endl;
   hce->AddHitsCollection( hcID, fHitsCollection ); 
 }
 
@@ -61,10 +62,24 @@ G4bool G4BeamTestSiSD::ProcessHits(G4Step* aStep,
   /* G4cout << " Particle_name = " <<  name  << G4endl;   */
 
   if (name == "opticalphoton" || name == "gamma") {
-/*  G4cout << " Particle_name = " <<  name  << G4endl; */
+  // G4cout << " Particle_name = " <<  name  << G4endl;
 
+// total energy
+  G4double etot = aStep->GetTrack()->GetTotalEnergy();
 // energy deposit
   G4double edep = aStep->GetTotalEnergyDeposit();
+
+  if (etot < 2.26 * CLHEP::eV) { // Lower threshold of PMT - 550nm
+  // if (etot < 2.48 * CLHEP::eV) { // Lower threshold of PMT - 500nm
+      // G4cout << "particle " << name << " under threshold with energy " << etot << G4endl;
+      return true;
+  }
+  if (etot > 3.55 * CLHEP::eV) { // Upper threshold of PMT - 350nm
+  // if (etot > 3.10 * CLHEP::eV) { // Upper threshold of PMT - 400nm
+      // G4cout << "particle " << name << " over threshold with energy " << etot << G4endl;
+      return true;
+  }
+  // G4cout << "inserting particle " << name << " with energy " << etot << " into record" << G4endl;
 
 // if (edep==0.) return false;
 

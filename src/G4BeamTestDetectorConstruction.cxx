@@ -3,6 +3,7 @@
 
 #include <G4LogicalVolume.hh>
 #include <G4PVPlacement.hh>
+#include <G4SDManager.hh>
 
 #include <G4Box.hh>
 
@@ -34,12 +35,17 @@ G4VPhysicalVolume* G4BeamTestDetectorConstruction::Construct()
   /* origin_.set(delaunay.GetOrigin().x(), delaunay.GetOrigin().y(), zSnowBottom + zHalfLength); */
 
   // Determine World dimensions
-  G4double xWorld = 2.0 * CLHEP::m;
-  G4double yWorld = 2.0 * CLHEP::m;
-  G4double zWorld = 2.0 * CLHEP::m;
+  G4double xWorld = 4.0 * CLHEP::m;
+  G4double yWorld = 4.0 * CLHEP::m;
+  G4double zWorld = 4.0 * CLHEP::m;
+
+  // SC4 dimensions
+  G4double scinHeight_ = 1 * 2.54 * CLHEP::cm;
+  G4double scinWidth_ = 1 * 2.54 * CLHEP::cm;
+  G4double scinThickness_ = 1 * 2.54 * CLHEP::cm;
 
   // Create world volume
-  G4Box* world_box = new G4Box("solid_world", xWorld, yWorld, zWorld);
+  G4Box* world_box = new G4Box("solid_world", xWorld*0.5, yWorld*0.5, zWorld*0.5);
   G4LogicalVolume* worldLog =
       new G4LogicalVolume(world_box, G4Material::GetMaterial("Air"), "log_world", 0, 0, 0);
   G4VPhysicalVolume* worldPhys =
@@ -56,15 +62,29 @@ G4VPhysicalVolume* G4BeamTestDetectorConstruction::Construct()
   tank_->InstallTank(worldPhys, origin_);
   // }
 
+  // Define SC4
+  G4Box* sc4_box = new G4Box("sc4",scinHeight_*0.5, scinWidth_*0.5, scinThickness_*0.5);
+  G4LogicalVolume* sc4Log =
+      new G4LogicalVolume(sc4_box, G4Material::GetMaterial("SC4"), "log_sc4", 0, 0, 0);
+  G4VPhysicalVolume* sc4Phys =
+      new G4PVPlacement(0, G4ThreeVector(1.2*CLHEP::m,0,0), sc4Log, "sc4", worldLog, false, 0);
+
   // User limits (energy cutoffs)
   // Do not create photons or electrons below cherenkov threshold
   // See also corresponding UserSpecialCuts in Physicslist !!!!
   G4UserLimits* energyLimit = new G4UserLimits();
   /* energyLimit->SetUserMinEkine(280.0 * CLHEP::keV);  // Cherenkov threshold of electrons in ice */
-  energyLimit->SetUserMinEkine(1.907 * CLHEP::eV);  // Lower threshold of PMT - 600nm
+  energyLimit->SetUserMinEkine(2.26 * CLHEP::eV);  // Lower threshold of PMT - 550nm
+  // energyLimit->SetUserMaxEkine(3.55 * CLHEP::eV); //upper threshold of PMT - 350nm
   worldLog->SetUserLimits(energyLimit);
   /* snowLog->SetUserLimits(energyLimit); */
+  sc4Log->SetUserLimits(energyLimit);
   
+  // G4SDManager* sdManager = G4SDManager::GetSDMpointer();
+  // sc4SD_ = new G4BeamTestSC4SD("sc4_SD_", "HitsCollection");
+  // sdManager->AddNewDetector(sc4SD_);
+  // sc4Log->SetSensitiveDetector(sc4SD_);
+
   return worldPhys;
 }
 
@@ -80,6 +100,7 @@ void G4BeamTestDetectorConstruction::CreateMaterials()
   /* CreatePerlite(); */
   CreateGlassSphere();
   CreateEffectiveDOMMaterial();
+  CreateSC4();
 
   //if(verboseLevel_>0) G4cout << *G4Material::GetMaterialTable() << G4endl;
 }
@@ -105,7 +126,8 @@ void G4BeamTestDetectorConstruction::CreateWater()
   // https://docushare.icecube.wisc.edu/dsweb/Get/Document-6637/R7081-02%20data%20sheet.pdf<Paste>
   // TODO(shivesh): add more properties?
   const G4int water_bins = 2;
-  G4double water_ephot[water_bins] = {1.91 * CLHEP::eV, 4.13 * CLHEP::eV};
+  // G4double water_ephot[water_bins] = {1.91 * CLHEP::eV, 4.13 * CLHEP::eV};
+  G4double water_ephot[water_bins] = {0.1 * CLHEP::eV, 10 * CLHEP::eV};
   G4double water_refr[water_bins] = {1.33, 1.33};
   G4MaterialPropertiesTable *mpt_water = new G4MaterialPropertiesTable ();
   mpt_water->AddProperty ("RINDEX", water_ephot, water_refr, water_bins);
@@ -144,9 +166,40 @@ void G4BeamTestDetectorConstruction::CreateGlassSphere()
   // 20 lbs. weight = 9072 g
   // 6.5" outer radius & 0.5" thickness = 4024 cm3
   G4NistManager* nistManager = G4NistManager::Instance();
-  G4Material* glass = new G4Material("Glass", 2.254 * CLHEP::g / CLHEP::cm3, 2, kStateSolid);
-  glass->AddElement(nistManager->FindOrBuildElement("Si"), 1);
-  glass->AddElement(nistManager->FindOrBuildElement("O"),  2);
+  // G4Material* glass = new G4Material("Glass", 2.254 * CLHEP::g / CLHEP::cm3, 2, kStateSolid);
+  // glass->AddElement(nistManager->FindOrBuildElement("Si"), 1);
+  // glass->AddElement(nistManager->FindOrBuildElement("O"),  2);
+
+  // http://hypernews.slac.stanford.edu/HyperNews/geant4/get/AUX/2013/03/11/12.39-85121-chDetectorConstruction.cc
+  // Define elements for all materials not found in the NIST database
+  G4Element* Si = nistManager->FindOrBuildElement("Si");
+  G4Element* B = nistManager->FindOrBuildElement("B");
+  G4Element* O = nistManager->FindOrBuildElement("O");
+  G4Element* Na = nistManager->FindOrBuildElement("Na");
+  G4Element* Al = nistManager->FindOrBuildElement("Al");
+  G4Element* K = nistManager->FindOrBuildElement("K");  
+
+  G4double density;
+  G4int ncomponents;
+  G4double fractionmass;
+  G4Material* glass = new G4Material("Glass", density= 2.23*CLHEP::g/CLHEP::cm3, ncomponents=6);
+  glass->AddElement(B, fractionmass=0.040064);
+  glass->AddElement(O, fractionmass=0.539562); 
+  glass->AddElement(Na, fractionmass=0.028191);
+  glass->AddElement(Al, fractionmass=0.011644);
+  glass->AddElement(Si, fractionmass=0.377220);
+  glass->AddElement(K, fractionmass=0.003321);
+
+  // pmt spectral response 300-650nm
+  // https://docushare.icecube.wisc.edu/dsweb/Get/Document-6637/R7081-02%20data%20sheet.pdf<Paste>
+  // TODO(shivesh): add more properties?
+  const G4int glass_bins = 2;
+  // G4double glass_ephot[glass_bins] = {1.91 * CLHEP::eV, 4.13 * CLHEP::eV};
+  G4double glass_ephot[glass_bins] = {0.1 * CLHEP::eV, 10 * CLHEP::eV};
+  G4double glass_refr[glass_bins] = {1.47, 1.47};
+  G4MaterialPropertiesTable *mpt_glass = new G4MaterialPropertiesTable ();
+  mpt_glass->AddProperty ("RINDEX", glass_ephot, glass_refr, glass_bins);
+  glass->SetMaterialPropertiesTable(mpt_glass);
 }
 
 /*****************************************************************/
@@ -160,4 +213,23 @@ void G4BeamTestDetectorConstruction::CreateEffectiveDOMMaterial()
   G4Material* glass = new G4Material("effectiveDOM", 0.2 * CLHEP::g / CLHEP::cm3, 2, kStateSolid);
   glass->AddElement(nistManager->FindOrBuildElement("Si"), 1);
   glass->AddElement(nistManager->FindOrBuildElement("O"),  2);
+
+  // const G4int glass_bins = 2;
+  // G4double glass_ephot[glass_bins] = {1.91 * CLHEP::eV, 4.13 * CLHEP::eV};
+  // glass 
+  // G4double glass_ephot[glass_bins] = {0.1 * CLHEP::eV, 10 * CLHEP::eV};
+  // G4double glass_refr[glass_bins] = {1.47, 1.47};
+  // G4MaterialPropertiesTable *mpt_glass = new G4MaterialPropertiesTable ();
+  // mpt_glass->AddProperty ("RINDEX", glass_ephot, glass_refr, glass_bins);
+  // glass->SetMaterialPropertiesTable(mpt_glass);
+}
+
+void G4BeamTestDetectorConstruction::CreateSC4()
+{
+  G4NistManager* nistManager = G4NistManager::Instance();
+  // POM
+  G4Material* plastic = new G4Material("SC4", 1.425 * CLHEP::g / CLHEP::cm3, 3, kStateSolid);
+  plastic->AddElement(nistManager->FindOrBuildElement("H"), 2);
+  plastic->AddElement(nistManager->FindOrBuildElement("C"), 1);
+  plastic->AddElement(nistManager->FindOrBuildElement("O"), 1);
 }

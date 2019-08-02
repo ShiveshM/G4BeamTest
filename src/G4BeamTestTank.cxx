@@ -28,7 +28,8 @@
 G4BeamTestTank::G4BeamTestTank()
 {
   // Get tank dimensions
-  tankThickness_ = 0.0*CLHEP::cm; // TODO(shivesh) : check thickness
+  // tankThickness_ = 0.0*CLHEP::cm; // TODO(shivesh) : check thickness
+  tankThickness_ = 0.44 * 2.54 *CLHEP::cm; // TODO(shivesh) : check thickness
   tankHeight_  = 76.83 * 2.54 * CLHEP::cm;
   innerRadius_ = 32 * 2.54 * CLHEP::cm;
   outerRadius_ = innerRadius_ + tankThickness_;
@@ -56,7 +57,7 @@ G4VPhysicalVolume* G4BeamTestTank::InstallTank(G4VPhysicalVolume* mother, const 
   // See also corresponding UserSpecialCuts in Physicslist !!!!
   // TODO(shivesh): Maybe do all of this as stepping action ??????
   G4UserLimits* energyLimit = new G4UserLimits();
-  energyLimit->SetUserMinEkine(1.907 * CLHEP::eV);  // Lower threshold of PMT - 600nm
+  energyLimit->SetUserMinEkine(2.26 * CLHEP::eV);  // Lower threshold of PMT - 550nm
 
   // std::string tankName=boost::lexical_cast<std::string>(tankKey_);
   std::string tankName = "BTT";
@@ -140,7 +141,7 @@ G4VPhysicalVolume* G4BeamTestTank::InstallTank(G4VPhysicalVolume* mother, const 
       new G4LogicalVolume(upperglasssphere, glass,
                           ("log_dom_up_" + omName).c_str(), 0, 0, 0);
   G4LogicalVolume* logLowerGlass =
-      new G4LogicalVolume(lowerglasssphere, water,
+      new G4LogicalVolume(lowerglasssphere, glass,
                           ("log_dom_lo_" + omName).c_str(), 0, 0, 0);
   G4LogicalVolume* logUpperDOM =
       new G4LogicalVolume(upperdomsphere, effectiveDOM,
@@ -172,7 +173,7 @@ G4VPhysicalVolume* G4BeamTestTank::InstallTank(G4VPhysicalVolume* mother, const 
   G4SDManager* sdManager = G4SDManager::GetSDMpointer();
   iceSD_ = new G4BeamTestSiSD(("ice_SD_" + tankName).c_str(), "HitsCollection");
   sdManager->AddNewDetector(iceSD_);
-  /* logLowerDOM->SetSensitiveDetector(iceSD_); */
+  // logLowerDOM->SetSensitiveDetector(iceSD_);
   logLowerGlass->SetSensitiveDetector(iceSD_);
 
   // Instantiation of a set of visualization attributes with red colour

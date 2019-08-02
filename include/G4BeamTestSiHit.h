@@ -9,6 +9,8 @@
 #include "G4ThreeVector.hh"
 #include "tls.hh"
 
+static std::fstream testnew("./testnew.txt", std::ofstream::out);
+
 /// Tracker hit class
 ///
 /// It defines data members to store the trackID, chamberNb, energy deposit,
@@ -67,7 +69,11 @@ public:
   { energy = ene; }
   inline G4double GetEnergy()
   { return energy; }
- 
+/*SS: ADDED FOLLOWING 4 LINES*/
+  /* inline void SetTime(G4double ti)
+  {time = ti;}
+  inline G4double GetTime()
+  { return time;}  */
 
 private:
   G4double    fTime;

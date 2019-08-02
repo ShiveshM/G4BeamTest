@@ -33,13 +33,14 @@ void G4BeamTestEventAction::BeginOfEventAction(const G4Event* event )
  
   
   G4SDManager * SDman = G4SDManager::GetSDMpointer();
+  SDman->ListTree();
   if(SiCollID<0)
     {
       G4String colNam;
       SiCollID = SDman->GetCollectionID(colNam="G4BeamTestSiSDCollection");
      
     }
-  
+
 
 }
 
@@ -49,6 +50,9 @@ void G4BeamTestEventAction::EndOfEventAction(const G4Event* event)
 {   
 
   G4cout << ">>> Summary of Event " << event->GetEventID() << G4endl;
+  // testnew << ">>> Summary of Event " << event->GetEventID() << G4endl;
+
+  G4cout << SiCollID << G4endl;
 
   if(SiCollID<0) return;
 
@@ -63,17 +67,23 @@ void G4BeamTestEventAction::EndOfEventAction(const G4Event* event)
 
 
 
-
   if(SiHC)
     {
       int n_hit = SiHC->entries();
+      // testnew << std::flush;
       G4cout << G4endl;
-      G4cout << "Si hits " <<
-      "--------------------------------------------------------------"
-	     << G4endl;
+      // G4cout << "Si hits " <<
+      // "--------------------------------------------------------------"
+      //    << G4endl;
       G4cout << n_hit << " hits are stored in G4BeamTestSiHitsCollection."
 	     << G4endl;
       /* G4cout << "List of hits in tracker" << G4endl; */
+      // testnew << G4endl;
+      // testnew << "Si hits " <<
+      // "--------------------------------------------------------------"
+      testnew << n_hit << " hits are stored in G4BeamTestSiHitsCollection."
+	     << G4endl;
+      /* testnew << "List of hits in tracker" << G4endl; */
       for(int i=0;i<n_hit;i++)
       {
           /* (*SiHC)[i]->Print(); */
@@ -81,7 +91,9 @@ void G4BeamTestEventAction::EndOfEventAction(const G4Event* event)
       }
 
       //      G4cout << "sid + " << SiCollID << G4endl;
-   
+      //      testnew << "sid + " << SiCollID << G4endl;
+      testnew << std::flush;
+
     } 
 
 }

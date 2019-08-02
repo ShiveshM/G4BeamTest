@@ -1,14 +1,14 @@
-/vis/ogl/set/displayListLimit 10000000000
+/vis/ogl/set/displayListLimit 1
 
 /gps/particle e-
-/gps/energy 2 GeV
+/gps/energy 8 GeV
 
 /gps/pos/type Plane
 /gps/pos/shape Circle
 /gps/pos/centre 60 60 -25 cm
-/gps/pos/radius 0.01 mm
+/gps/pos/radius 0.5 cm
 /gps/ang/type iso
 
 /gps/direction 1 0 0
 /gps/position -2 0 0 m
-/run/beamOn 1000
+/run/beamOn 1

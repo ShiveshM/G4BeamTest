@@ -34,6 +34,7 @@ class G4BeamTestDetectorConstruction: public G4VUserDetectorConstruction
   /* void CreatePerlite(); */
   void CreateGlassSphere();
   void CreateEffectiveDOMMaterial();
+  void CreateSC4();
 
   G4ThreeVector origin_;
 
