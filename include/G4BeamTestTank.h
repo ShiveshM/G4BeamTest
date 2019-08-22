@@ -30,7 +30,7 @@ class G4BeamTestTank
 
   ~G4BeamTestTank();
 
-  const G4ThreeVector& GetPos() const {return position_;}
+  // const G4ThreeVector& GetPos() const {return position_;}
 
   /* /// Position of center of the tank */
   /* I3Position GetPos_I3(); */
@@ -86,7 +86,7 @@ class G4BeamTestTank
   G4double glassOuterRadius_;
   G4double glassThickness_;
 
-  G4ThreeVector position_;
+  // G4ThreeVector position_;
 
   // G4ThreeVector delaunayPoint1_;
   // G4ThreeVector delaunayPoint2_;

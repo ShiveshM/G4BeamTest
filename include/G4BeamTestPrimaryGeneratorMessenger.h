@@ -15,9 +15,9 @@ class G4BeamTestPrimaryGeneratorMessenger: public G4UImessenger
   public:
     G4BeamTestPrimaryGeneratorMessenger(G4BeamTestPrimaryGeneratorAction* );
     virtual ~G4BeamTestPrimaryGeneratorMessenger();
- 
+
     virtual void SetNewValue(G4UIcommand*, G4String);
- 
+
   private:
     G4BeamTestPrimaryGeneratorAction* fG4BeamTestAction;
     G4UIdirectory*                  fGunDir;

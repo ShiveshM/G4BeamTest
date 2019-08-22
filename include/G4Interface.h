@@ -2,8 +2,6 @@
 #define _TOPSIM_G4INTERFACE_H_
 
 #include "G4RunManager.hh"
-/* #include "G4BeamTestRunManager.h" */
-/* #include <icetray/I3Logging.h> */
 
 #ifdef G4VIS_USE
 class G4VisManager;
@@ -12,6 +10,8 @@ class G4VisManager;
 class I3Particle;
 class G4BeamTestTank;
 class G4BeamTestDetectorConstruction;
+
+extern std::fstream testnew;
 
 /**
  * Top-level class to handle Geant4. All global things are initialized here (run manager, visualization manager, detector construction, physics list and user actions).

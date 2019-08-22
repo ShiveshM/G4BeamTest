@@ -1,5 +1,5 @@
-#ifndef G4BeamTestSiSD_h
-#define G4BeamTestSiSD_h 1
+#ifndef G4BeamTestSC4SD_h
+#define G4BeamTestSC4SD_h 1
 
 #include "G4VSensitiveDetector.hh"
 
@@ -18,11 +18,11 @@ class G4HCofThisEvent;
 /// by Geant4 kernel at each step. A hit is created with each step with non zero
 /// energy deposit.
 
-class G4BeamTestSiSD : public G4VSensitiveDetector
+class G4BeamTestSC4SD : public G4VSensitiveDetector
 {
 public:
-  G4BeamTestSiSD(const G4String& name, const G4String& hitsCollectionName);
-  virtual ~G4BeamTestSiSD();
+  G4BeamTestSC4SD(const G4String& name, const G4String& hitsCollectionName);
+  virtual ~G4BeamTestSC4SD();
 
   // methods from base class
   virtual void   Initialize(G4HCofThisEvent* hitCollection);
@@ -38,4 +38,5 @@ private:
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
+
 

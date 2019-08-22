@@ -41,11 +41,11 @@ private:
   G4eMultipleScattering electronMultipleScattering;
   G4eIonisation electronIonisation;
   G4eBremsstrahlung electronBremsStrahlung;
-  
+
   //Positron physics
   G4eMultipleScattering positronMultipleScattering;
-  G4eIonisation positronIonisation; 
-  G4eBremsstrahlung positronBremsStrahlung;  
+  G4eIonisation positronIonisation;
+  G4eBremsstrahlung positronBremsStrahlung;
   G4eplusAnnihilation annihilation;
 };
 

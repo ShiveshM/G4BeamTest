@@ -9,7 +9,7 @@
 #include "G4ThreeVector.hh"
 #include "tls.hh"
 
-static std::fstream testnew("./testnew.txt", std::ofstream::out);
+#include "G4Interface.h"
 
 /// Tracker hit class
 ///

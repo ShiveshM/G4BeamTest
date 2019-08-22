@@ -27,10 +27,10 @@
 */
 class G4BeamTestMuonPhysics : public G4VPhysicsConstructor
 {
-public: 
+public:
   G4BeamTestMuonPhysics();
   ~G4BeamTestMuonPhysics();
-  
+
   void ConstructParticle();
   void ConstructProcess();
 

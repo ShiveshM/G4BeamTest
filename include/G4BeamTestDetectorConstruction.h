@@ -5,6 +5,7 @@
 #include <G4ThreeVector.hh>
 
 #include "G4BeamTestTank.h"
+#include "G4BeamTestSC4SD.h"
 
 class G4BeamTestDetectorConstruction: public G4VUserDetectorConstruction
 {
@@ -26,12 +27,8 @@ class G4BeamTestDetectorConstruction: public G4VUserDetectorConstruction
   void CreateMaterials();
 
   void CreateAir();
-  /* void CreateIce(); */
-  /* void CreateSnow(); */
   void CreateWater();
   void CreatePlastic();
-  /* void CreateTyvek(); */
-  /* void CreatePerlite(); */
   void CreateGlassSphere();
   void CreateEffectiveDOMMaterial();
   void CreateSC4();
@@ -41,6 +38,7 @@ class G4BeamTestDetectorConstruction: public G4VUserDetectorConstruction
   G4int verboseLevel_;
 
   G4BeamTestTank* tank_;
+  G4BeamTestSC4SD* sc4SD_;
 };
 
 #endif

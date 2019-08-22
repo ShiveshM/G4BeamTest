@@ -12,7 +12,7 @@ class G4BeamTestEventAction : public G4UserEventAction
   public:
     G4BeamTestEventAction();
     virtual ~G4BeamTestEventAction();
-    
+
     virtual void BeginOfEventAction(const G4Event* );
     virtual void EndOfEventAction(const G4Event* );
 
@@ -29,6 +29,7 @@ class G4BeamTestEventAction : public G4UserEventAction
   G4double  fIntegralZ;
   G4double  fXIn;
   G4int SiCollID;
+  G4int SC4CollID;
   G4int hcID;
 
 	G4double  fYIn;
@@ -37,6 +38,3 @@ class G4BeamTestEventAction : public G4UserEventAction
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
-
-    
-

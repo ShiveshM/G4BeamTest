@@ -3,12 +3,15 @@
 
 #include "G4Interface.h"
 #include "G4BeamTestTank.h"
+#include "G4BeamTestSiHit.h"
+
+std::fstream testnew;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 namespace {
   void PrintUsage() {
     G4cerr << " Usage: " << G4endl;
-    G4cerr << " OpNovice [-m macro ] [-u UIsession] [-t nThreads] [-r seed] "
+    G4cerr << " OpNovice [-m macro ] [-u UIsession] [-t nThreads] [-r seed] [-n outName]"
            << G4endl;
     G4cerr << "   note: -t option is available only for multi-threaded mode."
            << G4endl;
@@ -33,10 +36,14 @@ int main(int argc,char** argv)
 #endif
 
   G4long myseed = 345354;
+  std::string outName = "./testnew.txt";
   for ( G4int i=1; i<argc; i=i+2 ) {
      if      ( G4String(argv[i]) == "-m" ) macro   = argv[i+1];
      else if ( G4String(argv[i]) == "-u" ) session = argv[i+1];
      else if ( G4String(argv[i]) == "-r" ) myseed  = atoi(argv[i+1]);
+     else if ( G4String(argv[i]) == "-n" ) {
+         outName = "./"+std::string(argv[i+1]);
+     }
 #ifdef G4MULTITHREADED
      else if ( G4String(argv[i]) == "-t" ) {
                     nThreads = G4UIcommand::ConvertToInt(argv[i+1]);
@@ -47,6 +54,8 @@ int main(int argc,char** argv)
       return 1;
     }
   }
+
+  testnew.open(outName, std::ofstream::out);
 
   // Choose the Random engine
   //

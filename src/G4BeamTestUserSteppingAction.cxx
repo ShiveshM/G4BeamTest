@@ -40,7 +40,7 @@ void G4BeamTestUserSteppingAction::UserSteppingAction(const G4Step* step)
       //check if particle energy is below threshold; if true, kill the particle
       G4double energy = track->GetTotalEnergy();
       if(energy < threshold){
-          G4cout << "SteppingAction: killing particle " << particle << " with energy " << energy << " < " << threshold << G4endl;
+          if (energy > 0) G4cout << "SteppingAction: killing particle " << particle << " with energy " << energy << " < " << threshold << G4endl;
           track->SetTrackStatus(fStopAndKill);
       }
     }
