@@ -49,7 +49,7 @@ Additional dependencies:
 * [`Qt`](https://www.qt.io/) >= 4
 
 Be sure to install with `Qt` support for the GUI interface shown in the
-animation above.
+image above.
 
 ## License
 
