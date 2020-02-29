@@ -8,6 +8,10 @@ Test Beam Facility](https://ftbf.fnal.gov/) (FTBF).
 
 ![G4BeamTest Logo](logo.png)
 
+In this beam test, a tank was filled with distilled water, upon which an Optical Module in a glass housing was floating, observing [Cherenkov light](https://icecube.wisc.edu/science/icecube/detector) inside the tank (see below schematic). The goal was to study and confirm if pulse shape information can be used for particle identification (PID) between pions and electrons in the context of future water or ice Cherenkov [neutrino telescope experiments](https://icecube.wisc.edu/). For more details, see the paper (*Pulse Shape Particle Identification by a Single Large Hemispherical Photo-Multiplier Tube*)[https://arxiv.org/abs/1912.03901] - S. Samani, S. Mandalia, C. Argüelles, S. Axani, Y. Li, M.H. Moulai, B. Ty, Z. Xie, J. Conrad, T. Katori, P. Sandstrom.
+
+![Beam Test Schematic](beamtest.pdf)
+
 ## Installation
 G4BeamTest can be installed using `cmake`
 ```
@@ -50,6 +54,24 @@ Additional dependencies:
 
 Be sure to install with `Qt` support for the GUI interface shown in the
 image above.
+
+## Running G4BeamTest
+
+To test the installation is working, run the test macro `run1.mac`, which will
+generate 10 electrons with an energy of 2 GeV and fire them into the tank. In
+the `build` folder, run
+```
+./G4BeamTest -m run1.mac -n test_2GeV_e.txt
+```
+For each electron, if it manages to pass through the tank and is detected in
+the downstream scintillator (SC4), the number of Cherenkov photons that hit the
+underside of the Optical Module glass shell is recorded in the output file
+specified by the `-n` flag.
+
+To run with the GUI `Qt` application simply run
+```
+./G4BeamTest
+```
 
 ## License
 
