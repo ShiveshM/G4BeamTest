@@ -10,7 +10,7 @@ Test Beam Facility](https://ftbf.fnal.gov/) (FTBF).
 
 In this beam test, a tank was filled with distilled water, upon which an Optical Module in a glass housing was floating, observing [Cherenkov light](https://icecube.wisc.edu/science/icecube/detector) inside the tank (see below schematic). The goal was to study and confirm if pulse shape information can be used for particle identification (PID) between pions and electrons in the context of future water or ice Cherenkov [neutrino telescope experiments](https://icecube.wisc.edu/). For more details, see the paper "(*Pulse Shape Particle Identification by a Single Large Hemispherical Photo-Multiplier Tube*](https://arxiv.org/abs/1912.03901)" - S. Samani, S. Mandalia, C. Argüelles, S. Axani, Y. Li, M.H. Moulai, B. Ty, Z. Xie, J. Conrad, T. Katori, P. Sandstrom.
 
-![Beam Test Schematic](beamtest.svg)
+![Beam Test Schematic](beamtest.png)
 
 ## Installation
 G4BeamTest can be installed using `cmake`
