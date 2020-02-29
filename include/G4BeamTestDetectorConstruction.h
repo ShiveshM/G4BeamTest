@@ -32,6 +32,7 @@ class G4BeamTestDetectorConstruction: public G4VUserDetectorConstruction
   void CreateGlassSphere();
   void CreateEffectiveDOMMaterial();
   void CreateSC4();
+  void CreateSteel();
 
   G4ThreeVector origin_;
 

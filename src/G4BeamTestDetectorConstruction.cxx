@@ -4,6 +4,7 @@
 #include <G4LogicalVolume.hh>
 #include <G4PVPlacement.hh>
 #include <G4SDManager.hh>
+#include "G4SystemOfUnits.hh"
 
 #include <G4Box.hh>
 
@@ -59,6 +60,7 @@ G4VPhysicalVolume* G4BeamTestDetectorConstruction::Construct()
   // G4ThreeVector tankVec  = mwpc4Vec + G4ThreeVector(300.0*CLHEP::cm, 0, 0);
   G4ThreeVector tankVec  = G4ThreeVector(0, 0, 0);
   G4ThreeVector sc4Vec   = tankVec +  G4ThreeVector(120.0*CLHEP::cm, 0, 0);
+  G4ThreeVector steelVec = tankVec +  G4ThreeVector(-120.0*CLHEP::cm, 0, 0);
 
   tank_->InstallTank(worldPhys, tankVec);
 
@@ -90,6 +92,13 @@ G4VPhysicalVolume* G4BeamTestDetectorConstruction::Construct()
   G4VPhysicalVolume* sc4Phys =
       new G4PVPlacement(0, sc4Vec, sc4Log, "sc4", worldLog, false, 0);
 
+  // Define steel
+  // G4Box* steel_box = new G4Box("steel", scinX_, scinY_*0.5, scinZ_*2.0);
+  // G4LogicalVolume* steelLog =
+  //     new G4LogicalVolume(steel_box, G4Material::GetMaterial("Steel"), "log_steel", 0, 0, 0);
+  // G4VPhysicalVolume* steelPhys =
+  //     new G4PVPlacement(0, steelVec, steelLog, "steel", worldLog, false, 0);
+
   // User limits (energy cutoffs)
   G4UserLimits* energyLimit = new G4UserLimits();
   energyLimit->SetUserMinEkine(2.26 * CLHEP::eV);  // Lower threshold of PMT - 550nm
@@ -98,6 +107,7 @@ G4VPhysicalVolume* G4BeamTestDetectorConstruction::Construct()
   // sc2Log->SetUserLimits(energyLimit);
   // sc3Log->SetUserLimits(energyLimit);
   sc4Log->SetUserLimits(energyLimit);
+  // steelLog->SetUserLimits(energyLimit);
 
   G4SDManager* sdManager = G4SDManager::GetSDMpointer();
   sc4SD_ = new G4BeamTestSC4SD("sc4_SD_", "SDHitsCollection");
@@ -117,6 +127,7 @@ void G4BeamTestDetectorConstruction::CreateMaterials()
   CreateGlassSphere();
   CreateEffectiveDOMMaterial();
   CreateSC4();
+  CreateSteel();
 }
 
 /*****************************************************************/
@@ -294,4 +305,19 @@ void G4BeamTestDetectorConstruction::CreateSC4()
   plastic->AddElement(nistManager->FindOrBuildElement("H"), 2);
   plastic->AddElement(nistManager->FindOrBuildElement("C"), 1);
   plastic->AddElement(nistManager->FindOrBuildElement("O"), 1);
+}
+
+void G4BeamTestDetectorConstruction::CreateSteel()
+{
+  //---Steel
+  G4double a= 12.01*g/mole;
+  G4Element* elC = new G4Element("Carbon","C", 6,a);
+  
+  a = 55.85*g/mole;
+  G4Element* elFe = new G4Element("Iron","Fe", 26,a);
+  
+  G4double density = 7.8*g/cm3;
+  G4Material* Steel = new G4Material("Steel",density,2);
+  Steel->AddElement(elC, 1.*perCent);
+  Steel->AddElement(elFe, 99.*perCent);
 }

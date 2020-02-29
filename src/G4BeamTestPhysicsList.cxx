@@ -1,7 +1,7 @@
 #include <globals.hh>
 #include <G4Version.hh>
 #include "G4BeamTestPhysicsList.h"
-#include "G4BeamTestGeneralPhysics.h"
+// #include "G4BeamTestGeneralPhysics.h"
 /* #if G4VERSION_NUMBER < 1000 */
 /* #include "G4BeamTestEMPhysics.h" */
 /* #include "G4BeamTestMuonPhysics.h" */
@@ -26,6 +26,18 @@
 #include <G4ParticleTypes.hh>
 #include <G4UserSpecialCuts.hh>
 
+#include "G4HadronPhysicsFTFP_BERT.hh"
+#include "G4HadronPhysicsFTFP_BERT_HP.hh"
+#include "G4HadronPhysicsFTFP_BERT_TRV.hh"
+#include "G4HadronPhysicsFTF_BIC.hh"
+#include "G4HadronInelasticQBBC.hh"
+#include "G4HadronPhysicsQGSP_BERT.hh"
+#include "G4HadronPhysicsQGSP_BERT_HP.hh"
+#include "G4HadronPhysicsQGSP_BIC.hh"
+#include "G4HadronPhysicsQGSP_BIC_HP.hh"
+#include "G4HadronPhysicsQGSP_FTFP_BERT.hh"
+#include "G4HadronPhysicsQGS_BIC.hh"
+#include "G4RadioactiveDecayPhysics.hh"
 
 G4BeamTestPhysicsList::G4BeamTestPhysicsList()
   : G4VUserPhysicsList()
@@ -33,7 +45,7 @@ G4BeamTestPhysicsList::G4BeamTestPhysicsList()
   defaultCutValue = 0.7*CLHEP::mm;
   SetVerboseLevel(1);
 
-  RegisterPhysics(new G4BeamTestGeneralPhysics);
+  // RegisterPhysics(new G4BeamTestGeneralPhysics);
 /* #if G4VERSION_NUMBER < 1000 */
 /*   RegisterPhysics(new G4BeamTestEMPhysics); */
 /*   RegisterPhysics(new G4BeamTestMuonPhysics); */
@@ -49,9 +61,11 @@ G4BeamTestPhysicsList::G4BeamTestPhysicsList()
   RegisterPhysics(new G4EmExtraPhysics());
   RegisterPhysics(new G4DecayPhysics());
   RegisterPhysics(new G4HadronElasticPhysics());
-  RegisterPhysics(new G4HadronPhysicsFTFP_BERT());
+  // RegisterPhysics(new G4HadronPhysicsFTFP_BERT());
   RegisterPhysics(new G4StoppingPhysics());
   RegisterPhysics(new G4IonPhysics());
+  RegisterPhysics(new G4HadronPhysicsQGSP_BERT());
+  // RegisterPhysics(new G4HadronInelasticQBBC());
   //RegisterPhysics(new G4NeutronTrackingCut());
 /* #endif */
 }
