@@ -8,7 +8,20 @@ Test Beam Facility](https://ftbf.fnal.gov/) (FTBF).
 
 ![G4BeamTest Logo](logo.png)
 
-## Installation
+## Contents
+* [Optical Module Beam Test at the FTBF](#Optical-Module-Beam-Test-at-the-FTBF)
+* [Installation](#Installation)
+  * [Dependencies](#Dependencies)
+* [Running G4BeamTest](#Running-G4BeamTest)
+* [License](#License)
+
+## <a name="Optical-Module-Beam-Test-at-the-FTBF"></a> Optical Module Beam Test at the FTBF
+
+In this beam test, a tank was filled with distilled water, upon which an Optical Module in a glass housing was floating, observing [Cherenkov light](https://icecube.wisc.edu/science/icecube/detector) inside the tank (see below schematic). The goal was to study and confirm if pulse shape information can be used for particle identification (PID) between pions and electrons in the context of future water or ice Cherenkov [neutrino telescope experiments](https://icecube.wisc.edu/). For more details, see the paper "[*Pulse Shape Particle Identification by a Single Large Hemispherical Photo-Multiplier Tube*](https://arxiv.org/abs/1912.03901)" - S. Samani, S. Mandalia, C. Argüelles, S. Axani, Y. Li, M.H. Moulai, B. Ty, Z. Xie, J. Conrad, T. Katori, P. Sandstrom.
+
+<img src="https://raw.githubusercontent.com/ShiveshM/G4BeamTest/master/beamtest.png" width="50%">
+
+## <a name="Installation"></a> Installation
 G4BeamTest can be installed using `cmake`
 ```
 mkdir build && cd build
@@ -16,7 +29,7 @@ cmake -DGEANT4_USE_QT=ON ../
 make
 ```
 
-### Dependencies
+### <a name="Dependencies"></a> Dependencies
 
 G4BeamTest has the following dependencies:
 * [`gcc-c++`](https://gcc.gnu.org/)
@@ -51,7 +64,7 @@ Additional dependencies:
 Be sure to install with `Qt` support for the GUI interface shown in the
 image above.
 
-## Running G4BeamTest
+## <a name="Running-G4BeamTest"></a> Running G4BeamTest
 
 To test the installation is working, run the test macro `run1.mac`, which will
 generate 10 electrons with an energy of 2 GeV and fire them into the tank. In
@@ -69,13 +82,7 @@ To run with the GUI `Qt` application simply run
 ./G4BeamTest
 ```
 
-## Optical Module Beam Test at the FTBF
-
-In this beam test, a tank was filled with distilled water, upon which an Optical Module in a glass housing was floating, observing [Cherenkov light](https://icecube.wisc.edu/science/icecube/detector) inside the tank (see below schematic). The goal was to study and confirm if pulse shape information can be used for particle identification (PID) between pions and electrons in the context of future water or ice Cherenkov [neutrino telescope experiments](https://icecube.wisc.edu/). For more details, see the paper "[*Pulse Shape Particle Identification by a Single Large Hemispherical Photo-Multiplier Tube*](https://arxiv.org/abs/1912.03901)" - S. Samani, S. Mandalia, C. Argüelles, S. Axani, Y. Li, M.H. Moulai, B. Ty, Z. Xie, J. Conrad, T. Katori, P. Sandstrom.
-
-![Beam Test Schematic](beamtest.png)
-
-## License
+## <a name="License"></a> License
 
 [MIT License](LICENSE)
 
